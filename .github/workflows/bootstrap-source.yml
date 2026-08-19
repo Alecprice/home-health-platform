@@ -31,6 +31,28 @@ jobs:
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Verify bootstrap chunks
+        if: steps.bootstrap.outputs.present == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/expected <<'EOF'
+          efce1cd74081fe01390c358179850c46aaac4a78b6600de5d5589f75e16a60d2  .bootstrap/xz-00.b64
+          b35c888c6a7c094a4103c902ed58587bf622bca05e92c1e1b319f6222fbbc475  .bootstrap/xz-01.b64
+          97fcc3035187b7b0f2d3155cc558a1af66100960a5d146fb934452107c47bf2c  .bootstrap/xz-02.b64
+          088173df2ab58421666b50a9e686d7166282727ef19ab7ec36810736a98f5db9  .bootstrap/xz-03.b64
+          67fb550f6edc0498a1a8fff1691c07d904b052ed95215fedfec5d67fce0bdb31  .bootstrap/xz-04.b64
+          06565b9e75a5147044261e26dbddda3576e89f61274a4d06a87e70d963a35b73  .bootstrap/xz-05.b64
+          8515c34bb9d5d2631525147fdf2fbc68e56c85bfe8ee43e4ab1562f7bf6e6721  .bootstrap/xz-06.b64
+          ea9ee5f46286f40b66edc3e861100a89bdff9448a9e9b1364308ab1deb269685  .bootstrap/xz-07.b64
+          4aa3e766da355170a5a982f3fccf5823853e10e402c66e794866bad2046977a2  .bootstrap/xz-08.b64
+          2e70b2e13bda6b4f8bcd8ffacabb8ee088ce7906e4e3bb87285243bdae055913  .bootstrap/xz-09.b64
+          aa6f8fe86f638b75e09ed525d0f130823b7569986f4065892e5eccf8b64c66c9  .bootstrap/xz-10.b64
+          1b95ad06523e388b13fd8f178ad5dec2a43508bb9ae753d519ef3017a045c707  .bootstrap/xz-11.b64
+          EOF
+          sed -i 's/^          //' /tmp/expected
+          sha256sum -c /tmp/expected
+
       - name: Reconstruct and expand verified source
         if: steps.bootstrap.outputs.present == 'true'
         shell: bash
