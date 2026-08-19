@@ -36,7 +36,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap/xz-*.b64 | tr -d '\n\r ' | base64 -d > /tmp/source.tar.xz
+          cat \
+            .bootstrap/xz-00.b64 \
+            .bootstrap/xz-01.b64 \
+            .bootstrap/fix-02a.b64 .bootstrap/fix-02b.b64 .bootstrap/fix-02c.b64 .bootstrap/fix-02d.b64 \
+            .bootstrap/xz-03.b64 .bootstrap/xz-04.b64 .bootstrap/xz-05.b64 .bootstrap/xz-06.b64 \
+            .bootstrap/fix-07a.b64 .bootstrap/fix-07b.b64 .bootstrap/fix-07c.b64 .bootstrap/fix-07d.b64 \
+            .bootstrap/xz-08.b64 .bootstrap/xz-09.b64 \
+            .bootstrap/fix-10a.b64 .bootstrap/fix-10b.b64 .bootstrap/fix-10c.b64 .bootstrap/fix-10d.b64 \
+            .bootstrap/xz-11.b64 \
+            | tr -d '\n\r ' | base64 -d > /tmp/source.tar.xz
           echo "dbbaa8e25346b13c3558a193699f4bd0bda6e2e75ea26b904c5bcba43eda1d08  /tmp/source.tar.xz" | sha256sum -c -
           mkdir -p /tmp/import
           tar -xJf /tmp/source.tar.xz -C /tmp/import
@@ -44,6 +53,7 @@ jobs:
             --exclude='.git/' \
             --exclude='.bootstrap/' \
             --exclude='.github/workflows/bootstrap-source.yml' \
+            --exclude='.github/workflows/verify.yml' \
             /tmp/import/home-health-platform/ ./
           rm -rf .bootstrap
 
@@ -60,4 +70,4 @@ jobs:
             exit 0
           fi
           git commit -m "Import v0.7.1 Vercel-verified source [skip ci]"
-          git push origin "HEAD:${TARGET_BRANCH}"
+          git push --verbose origin "HEAD:${TARGET_BRANCH}"
