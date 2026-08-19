@@ -37,17 +37,17 @@ jobs:
         run: |
           set -euo pipefail
           cat > /tmp/expected <<'EOF'
-          efce1cd74081fe01390c358179850c46aaac4a78b6600de5d5589f75e16a60d2  .bootstrap/xz-00.b64
-          b35c888c6a7c094a4103c902ed58587bf622bca05e92c1e1b319f6222fbbc475  .bootstrap/xz-01.b64
-          97fcc3035187b7b0f2d3155cc558a1af66100960a5d146fb934452107c47bf2c  .bootstrap/xz-02.b64
-          088173df2ab58421666b50a9e686d7166282727ef19ab7ec36810736a98f5db9  .bootstrap/xz-03.b64
-          67fb550f6edc0498a1a8fff1691c07d904b052ed95215fedfec5d67fce0bdb31  .bootstrap/xz-04.b64
-          06565b9e75a5147044261e26dbddda3576e89f61274a4d06a87e70d963a35b73  .bootstrap/xz-05.b64
-          8515c34bb9d5d2631525147fdf2fbc68e56c85bfe8ee43e4ab1562f7bf6e6721  .bootstrap/xz-06.b64
-          ea9ee5f46286f40b66edc3e861100a89bdff9448a9e9b1364308ab1deb269685  .bootstrap/xz-07.b64
-          4aa3e766da355170a5a982f3fccf5823853e10e402c66e794866bad2046977a2  .bootstrap/xz-08.b64
-          2e70b2e13bda6b4f8bcd8ffacabb8ee088ce7906e4e3bb87285243bdae055913  .bootstrap/xz-09.b64
-          aa6f8fe86f638b75e09ed525d0f130823b7569986f4065892e5eccf8b64c66c9  .bootstrap/xz-10.b64
+          c63091f02069e3fba52836f0566c92a345880ef828376092319db37828de1ae0  .bootstrap/xz-00.b64
+          57385c470073f7150d7011e98e784ce16aaf4cc5aaf0cd79b35cfea9a8f58e9d  .bootstrap/xz-01.b64
+          adbaa7eb2aa4a507ebc4e0633dd983a7115697127e32343b17047739cd295f88  .bootstrap/xz-02.b64
+          ce000f54071542ac9b2569430dab9d0cc0299ac29036e82e0164040708c1ec7e  .bootstrap/xz-03.b64
+          585ca57b707b6e56799aff2f46f4ea2ea63852a91a7b1bfd4dafdb04d7b87e80  .bootstrap/xz-04.b64
+          2f5eca5e1024485f11cf811e8e60cfbb0be348f57ff55a58b4debc283585b86a  .bootstrap/xz-05.b64
+          d665ae583b2f93a52904e0612b954988189f91d35b31dc934dfe417b30d29278  .bootstrap/xz-06.b64
+          2ceaa247d20391c78e91b250307c1965b4ea029a6f34ffa2efc13d4e83cb2eed  .bootstrap/xz-07.b64
+          b4f427ade31d7ce182fd0cb367fd182297874048fcb0a53538ef0eeacbfb167d  .bootstrap/xz-08.b64
+          2f7c6a932afe20ef46651691410a661feba295cba7c76b20b96a603a9f080832  .bootstrap/xz-09.b64
+          a9db7d7b8cb350ea4f4f96d28ee464315bd91077be5b161589002d3911ac5ced  .bootstrap/xz-10.b64
           1b95ad06523e388b13fd8f178ad5dec2a43508bb9ae753d519ef3017a045c707  .bootstrap/xz-11.b64
           EOF
           sed -i 's/^          //' /tmp/expected
