@@ -53,6 +53,7 @@ jobs:
             --exclude='.git/' \
             --exclude='.bootstrap/' \
             --exclude='.github/workflows/bootstrap-source.yml' \
+            --exclude='.github/workflows/verify.yml' \
             /tmp/import/home-health-platform/ ./
           rm -rf .bootstrap
 
@@ -69,4 +70,4 @@ jobs:
             exit 0
           fi
           git commit -m "Import v0.7.1 Vercel-verified source [skip ci]"
-          git push origin "HEAD:${TARGET_BRANCH}"
+          git push --verbose origin "HEAD:${TARGET_BRANCH}"
