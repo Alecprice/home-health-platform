@@ -1,4 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "express"
+  "framework": "express",
+  "installCommand": "npm install --workspaces=false --include=dev --no-audit --no-fund",
+  "buildCommand": "npm run build"
 }
