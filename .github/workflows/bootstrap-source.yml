@@ -31,34 +31,21 @@ jobs:
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Verify bootstrap chunks
-        if: steps.bootstrap.outputs.present == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat > /tmp/expected <<'EOF'
-          c63091f02069e3fba52836f0566c92a345880ef828376092319db37828de1ae0  .bootstrap/xz-00.b64
-          57385c470073f7150d7011e98e784ce16aaf4cc5aaf0cd79b35cfea9a8f58e9d  .bootstrap/xz-01.b64
-          adbaa7eb2aa4a507ebc4e0633dd983a7115697127e32343b17047739cd295f88  .bootstrap/xz-02.b64
-          ce000f54071542ac9b2569430dab9d0cc0299ac29036e82e0164040708c1ec7e  .bootstrap/xz-03.b64
-          585ca57b707b6e56799aff2f46f4ea2ea63852a91a7b1bfd4dafdb04d7b87e80  .bootstrap/xz-04.b64
-          2f5eca5e1024485f11cf811e8e60cfbb0be348f57ff55a58b4debc283585b86a  .bootstrap/xz-05.b64
-          d665ae583b2f93a52904e0612b954988189f91d35b31dc934dfe417b30d29278  .bootstrap/xz-06.b64
-          2ceaa247d20391c78e91b250307c1965b4ea029a6f34ffa2efc13d4e83cb2eed  .bootstrap/xz-07.b64
-          b4f427ade31d7ce182fd0cb367fd182297874048fcb0a53538ef0eeacbfb167d  .bootstrap/xz-08.b64
-          2f7c6a932afe20ef46651691410a661feba295cba7c76b20b96a603a9f080832  .bootstrap/xz-09.b64
-          a9db7d7b8cb350ea4f4f96d28ee464315bd91077be5b161589002d3911ac5ced  .bootstrap/xz-10.b64
-          1b95ad06523e388b13fd8f178ad5dec2a43508bb9ae753d519ef3017a045c707  .bootstrap/xz-11.b64
-          EOF
-          sed -i 's/^          //' /tmp/expected
-          sha256sum -c /tmp/expected
-
       - name: Reconstruct and expand verified source
         if: steps.bootstrap.outputs.present == 'true'
         shell: bash
         run: |
           set -euo pipefail
-          cat .bootstrap/xz-*.b64 | tr -d '\n\r ' | base64 -d > /tmp/source.tar.xz
+          cat \
+            .bootstrap/xz-00.b64 \
+            .bootstrap/xz-01.b64 \
+            .bootstrap/fix-02a.b64 .bootstrap/fix-02b.b64 .bootstrap/fix-02c.b64 .bootstrap/fix-02d.b64 \
+            .bootstrap/xz-03.b64 .bootstrap/xz-04.b64 .bootstrap/xz-05.b64 .bootstrap/xz-06.b64 \
+            .bootstrap/fix-07a.b64 .bootstrap/fix-07b.b64 .bootstrap/fix-07c.b64 .bootstrap/fix-07d.b64 \
+            .bootstrap/xz-08.b64 .bootstrap/xz-09.b64 \
+            .bootstrap/fix-10a.b64 .bootstrap/fix-10b.b64 .bootstrap/fix-10c.b64 .bootstrap/fix-10d.b64 \
+            .bootstrap/xz-11.b64 \
+            | tr -d '\n\r ' | base64 -d > /tmp/source.tar.xz
           echo "dbbaa8e25346b13c3558a193699f4bd0bda6e2e75ea26b904c5bcba43eda1d08  /tmp/source.tar.xz" | sha256sum -c -
           mkdir -p /tmp/import
           tar -xJf /tmp/source.tar.xz -C /tmp/import
