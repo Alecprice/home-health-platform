@@ -3,20 +3,36 @@ name: Bootstrap v0.7.1 source
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   expand:
-    if: ${{ hashFiles('.bootstrap/xz-00.b64') != '' }}
     runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: ${{ github.head_ref || github.ref_name }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.head_ref || github.ref_name }}
+
+      - name: Check for bootstrap payload
+        id: bootstrap
+        shell: bash
+        run: |
+          if [ -f .bootstrap/xz-00.b64 ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Reconstruct and expand verified source
+        if: steps.bootstrap.outputs.present == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -32,6 +48,7 @@ jobs:
           rm -rf .bootstrap
 
       - name: Commit expanded source
+        if: steps.bootstrap.outputs.present == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -43,4 +60,4 @@ jobs:
             exit 0
           fi
           git commit -m "Import v0.7.1 Vercel-verified source [skip ci]"
-          git push
+          git push origin "HEAD:${TARGET_BRANCH}"
