@@ -1,0 +1,46 @@
+name: Bootstrap v0.7.1 source
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  expand:
+    if: ${{ hashFiles('.bootstrap/xz-00.b64') != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct and expand verified source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat .bootstrap/xz-*.b64 | tr -d '\n\r ' | base64 -d > /tmp/source.tar.xz
+          echo "dbbaa8e25346b13c3558a193699f4bd0bda6e2e75ea26b904c5bcba43eda1d08  /tmp/source.tar.xz" | sha256sum -c -
+          mkdir -p /tmp/import
+          tar -xJf /tmp/source.tar.xz -C /tmp/import
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='.bootstrap/' \
+            --exclude='.github/workflows/bootstrap-source.yml' \
+            /tmp/import/home-health-platform/ ./
+          rm -rf .bootstrap
+
+      - name: Commit expanded source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No source changes to commit."
+            exit 0
+          fi
+          git commit -m "Import v0.7.1 Vercel-verified source [skip ci]"
+          git push
