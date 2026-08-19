@@ -1,0 +1,29 @@
+{
+  "name": "home-health-platform",
+  "private": true,
+  "version": "0.7.1",
+  "workspaces": [
+    "web",
+    "api"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace web",
+    "dev:web": "npm run dev --workspace web",
+    "dev:api": "npm run dev --workspace api",
+    "build": "npm run build --workspace web && npm run build --workspace api",
+    "typecheck": "npm run typecheck --workspace web && npm run typecheck --workspace api",
+    "test": "npm run test --workspace web",
+    "db:migrate": "npm run db:migrate --workspace api",
+    "db:test": "bash scripts/test-db.sh",
+    "android:sync": "npm run android:sync --workspace web",
+    "android:open": "npm run android:open --workspace web",
+    "verify:source": "bash scripts/verify-source.sh && bash scripts/test-pure-logic.sh",
+    "verify": "npm run verify:source && npm run typecheck && npm test && npm run build",
+    "verify:full": "npm run verify && npm run db:test",
+    "test:pure": "bash scripts/test-pure-logic.sh",
+    "android:test": "bash scripts/test-android.sh"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
